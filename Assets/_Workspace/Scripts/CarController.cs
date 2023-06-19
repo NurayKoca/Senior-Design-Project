@@ -66,7 +66,12 @@ namespace _Workspace.Scripts
         {
             base.OnNetworkSpawn();
 
-            if (!IsOwner) enabled = false;
+            if (!IsOwner)
+            {
+                enabled = false;
+                return;
+            }
+            
 
             transform.name = IsHost ? "Host" : "Client";
 

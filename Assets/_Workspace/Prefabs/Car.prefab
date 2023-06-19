@@ -220,6 +220,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2618106488240973169, guid: 793bf8723ce4d5e4fb22bb5d8418281b, type: 3}
+      propertyPath: SyncScaleX
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2618106488240973169, guid: 793bf8723ce4d5e4fb22bb5d8418281b, type: 3}
+      propertyPath: SyncScaleY
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2618106488240973169, guid: 793bf8723ce4d5e4fb22bb5d8418281b, type: 3}
+      propertyPath: SyncScaleZ
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2618106488240973169, guid: 793bf8723ce4d5e4fb22bb5d8418281b, type: 3}
+      propertyPath: SyncRotAngleZ
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3105883347755725033, guid: 793bf8723ce4d5e4fb22bb5d8418281b, type: 3}
       propertyPath: m_SuspensionSpring.damper
       value: 9000
@@ -227,6 +243,38 @@ PrefabInstance:
     - target: {fileID: 3105883347755725033, guid: 793bf8723ce4d5e4fb22bb5d8418281b, type: 3}
       propertyPath: m_SuspensionSpring.spring
       value: 90000
+      objectReference: {fileID: 0}
+    - target: {fileID: 3896421975841554880, guid: 793bf8723ce4d5e4fb22bb5d8418281b, type: 3}
+      propertyPath: SyncScaleX
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3896421975841554880, guid: 793bf8723ce4d5e4fb22bb5d8418281b, type: 3}
+      propertyPath: SyncScaleY
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3896421975841554880, guid: 793bf8723ce4d5e4fb22bb5d8418281b, type: 3}
+      propertyPath: SyncScaleZ
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3896421975841554880, guid: 793bf8723ce4d5e4fb22bb5d8418281b, type: 3}
+      propertyPath: SyncRotAngleZ
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3900735048296330674, guid: 793bf8723ce4d5e4fb22bb5d8418281b, type: 3}
+      propertyPath: SyncScaleX
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3900735048296330674, guid: 793bf8723ce4d5e4fb22bb5d8418281b, type: 3}
+      propertyPath: SyncScaleY
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3900735048296330674, guid: 793bf8723ce4d5e4fb22bb5d8418281b, type: 3}
+      propertyPath: SyncScaleZ
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3900735048296330674, guid: 793bf8723ce4d5e4fb22bb5d8418281b, type: 3}
+      propertyPath: SyncRotAngleZ
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5379699315075227640, guid: 793bf8723ce4d5e4fb22bb5d8418281b, type: 3}
       propertyPath: m_SuspensionSpring.damper
@@ -243,6 +291,22 @@ PrefabInstance:
     - target: {fileID: 6084149306834093986, guid: 793bf8723ce4d5e4fb22bb5d8418281b, type: 3}
       propertyPath: m_SuspensionSpring.spring
       value: 90000
+      objectReference: {fileID: 0}
+    - target: {fileID: 7544868081171962570, guid: 793bf8723ce4d5e4fb22bb5d8418281b, type: 3}
+      propertyPath: SyncScaleX
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7544868081171962570, guid: 793bf8723ce4d5e4fb22bb5d8418281b, type: 3}
+      propertyPath: SyncScaleY
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7544868081171962570, guid: 793bf8723ce4d5e4fb22bb5d8418281b, type: 3}
+      propertyPath: SyncScaleZ
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7544868081171962570, guid: 793bf8723ce4d5e4fb22bb5d8418281b, type: 3}
+      propertyPath: SyncRotAngleZ
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9101566899031456793, guid: 793bf8723ce4d5e4fb22bb5d8418281b, type: 3}
       propertyPath: m_SuspensionSpring.damper
