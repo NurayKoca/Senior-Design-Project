@@ -1,10 +1,12 @@
 using System;
 using _Workspace.ScriptableObjects;
+using Cinemachine;
+using Unity.Netcode;
 using UnityEngine;
 
 namespace _Workspace.Scripts
 {
-    public class CarController : MonoBehaviour
+    public class CarController : NetworkBehaviour
     {
         #region Variables
         
@@ -32,9 +34,13 @@ namespace _Workspace.Scripts
         [SerializeField] Transform frontRightWheelTransform;
         [SerializeField] Transform rearLeftWheelTransform;
         [SerializeField] Transform rearRightWheelTransform;
-
+        
+        
+        private CinemachineVirtualCamera _carCamera;
 
         private Rigidbody _rigidbody;
+
+        private GameInput _gameInput;
 
         #endregion
 
@@ -53,20 +59,43 @@ namespace _Workspace.Scripts
 
         private void Awake()
         {
-            _rigidbody = GetComponent<Rigidbody>();
+            
+        }
 
+        public override void OnNetworkSpawn()
+        {
+            base.OnNetworkSpawn();
+
+            if (!IsOwner) enabled = false;
+
+            transform.name = IsHost ? "Host" : "Client";
+
+            // Setting Rigidbody Center Of Mass
+            _rigidbody = GetComponent<Rigidbody>();
             var curCenter =_rigidbody.centerOfMass;
             curCenter.y = -1;
             _rigidbody.centerOfMass = curCenter;
+
+            // Setting Camera
+            _carCamera = GameObject.FindGameObjectWithTag("CarCamera").GetComponent<CinemachineVirtualCamera>();
+            _carCamera.m_Follow = transform;
+            _carCamera.m_LookAt = transform;
+
+            // Setting Input System
+            _gameInput = new GameInput();
         }
 
         private void FixedUpdate()
         {
+            if (!IsOwner)
+            {
+                return;
+            }
+            
             GetInput();
             HandleMotor();
             HandleSteering();
             UpdateWheels();
-            //frontLeftWheelCollider.motorTorque = 8.174 * motorForce;
         }
 
         #endregion
@@ -76,17 +105,22 @@ namespace _Workspace.Scripts
 
         private void GetInput()
         {
-            _horizontalInput = Input.GetAxis("Horizontal");
-            _verticalInput = Input.GetAxis("Vertical");
-            _isBreaking = Input.GetKey(KeyCode.Space);
+            
+            _horizontalInput = _gameInput.GetMovementDirection().x;
+            _verticalInput = _gameInput.GetMovementDirection().y;
+            _isBreaking = _gameInput.GetBrakeStatus();
+            
+            //Debug.Log($"Horizontal : {_horizontalInput} // Vertical : {_verticalInput} // Breaking : {_isBreaking}");
         }
-
+        
         private void HandleMotor()
         {
             frontLeftWheelCollider.motorTorque = _verticalInput * motorForce;
             frontRightWheelCollider.motorTorque = _verticalInput * motorForce;
             _currentBreakForce = _isBreaking ? breakForce : 0f;
             ApplyBreaking();
+            
+            //Debug.Log("Handling Motor");
         }
 
         private void ApplyBreaking()
@@ -95,6 +129,8 @@ namespace _Workspace.Scripts
             frontLeftWheelCollider.brakeTorque = _currentBreakForce;
             rearLeftWheelCollider.brakeTorque = _currentBreakForce;
             rearRightWheelCollider.brakeTorque = _currentBreakForce;
+            
+            //Debug.Log("Applying Breaking");
         }
 
         private void HandleSteering()
@@ -102,6 +138,9 @@ namespace _Workspace.Scripts
             _currentSteerAngle = _maxSteerAngle * _horizontalInput;
             frontLeftWheelCollider.steerAngle = _currentSteerAngle;
             frontRightWheelCollider.steerAngle = _currentSteerAngle;
+            
+            
+            //Debug.Log("Handling Steering");
         }
 
         private void UpdateWheels()
@@ -110,6 +149,9 @@ namespace _Workspace.Scripts
             UpdateSingleWheel(frontRightWheelCollider, frontRightWheelTransform);
             UpdateSingleWheel(rearRightWheelCollider, rearRightWheelTransform);
             UpdateSingleWheel(rearLeftWheelCollider, rearLeftWheelTransform);
+            
+            
+            //Debug.Log("Updating Wheels");
         }
 
         private void UpdateSingleWheel(WheelCollider wheelCollider, Transform wheelTransform)

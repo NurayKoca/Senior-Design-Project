@@ -1,55 +1,59 @@
-using System;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class NetcodeUIController : MonoBehaviour
+namespace _Workspace.Scripts
 {
-    #region Variables
-
-    [SerializeField] private Button serverButton;
-    [SerializeField] private Button clientButton;
-    [SerializeField] private Button hostButton;
-
-    #endregion
-
-    #region Unity Funcs
-
-    private void Start()
+    public class NetcodeUIController : MonoBehaviour
     {
-        serverButton.onClick.AddListener(StartServer);
-        clientButton.onClick.AddListener(StartClient);
-        hostButton.onClick.AddListener(StartHost);
-    }
+        #region Variables
 
-    private void OnDestroy()
-    {
-        serverButton.onClick.RemoveListener(StartServer);
-        clientButton.onClick.RemoveListener(StartClient);
-        hostButton.onClick.RemoveListener(StartHost);
-    }
+        [SerializeField] private Button serverButton;
+        [SerializeField] private Button clientButton;
+        [SerializeField] private Button hostButton;
 
-    #endregion
+        #endregion
 
-    #region Server-Client-Host Starting Process
+        #region Unity Funcs
 
-    private void StartServer()
-    {
-        NetworkManager.Singleton.StartServer();
+        private void Start()
+        {
+            serverButton.onClick.AddListener(StartServer);
+            clientButton.onClick.AddListener(StartClient);
+            hostButton.onClick.AddListener(StartHost);
+        }
+
+        private void OnDestroy()
+        {
+            serverButton.onClick.RemoveListener(StartServer);
+            clientButton.onClick.RemoveListener(StartClient);
+            hostButton.onClick.RemoveListener(StartHost);
+        }
+
+        #endregion
+
+        #region Server-Client-Host Starting Process
+
+        private void StartServer()
+        {
+            NetworkManager.Singleton.StartServer();
         
-        UIController.OnNetcodeUiSelected?.Invoke();
-    }
+            UIController.OnNetcodeUiSelected?.Invoke();
+        }
     
-    private void StartClient()
-    {
-        NetworkManager.Singleton.StartClient();
-    }
+        private void StartClient()
+        {
+            NetworkManager.Singleton.StartClient();
+            UIController.OnNetcodeUiSelected?.Invoke();
+        }
     
-    private void StartHost()
-    {
-        NetworkManager.Singleton.StartHost();
-    }
+        private void StartHost()
+        {
+            NetworkManager.Singleton.StartHost();
+            UIController.OnNetcodeUiSelected?.Invoke();
+        }
     
 
-    #endregion    
+        #endregion    
+    }
 }
