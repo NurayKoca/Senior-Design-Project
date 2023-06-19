@@ -1,4 +1,4 @@
-using System;
+using System.Collections.Generic;
 using _Workspace.ScriptableObjects;
 using Cinemachine;
 using Unity.Netcode;
@@ -42,26 +42,40 @@ namespace _Workspace.Scripts
 
         private GameInput _gameInput;
 
+
+        public CarDataIndex carDataIndex;
+        
         #endregion
 
 
         #region Setting Car
 
-        public void SetCarSo(CarDataHolder carDataSo)
+        [ClientRpc]
+        private void SetCarSo_ClientRpc(int carDataSoIndex)
         {
-            carRenderer.material = carDataSo.carMaterial;
+            carRenderer.material = carDataIndex.GetCarDataSoByIndex(carDataSoIndex).carMaterial;
+        }
+
+        [ServerRpc]
+        private void SetCarSo_ServerRpc(int  carDataSoIndex)
+        {
+           SetCarSo_ClientRpc(carDataSoIndex);
+        }
+        
+        
+        public void SetCarSo(int index)
+        {
+            if (IsOwner)
+            {
+                SetCarSo_ServerRpc(index);
+            }
         }
 
         #endregion
 
 
         #region Unity Funcs
-
-        private void Awake()
-        {
-            
-        }
-
+        
         public override void OnNetworkSpawn()
         {
             base.OnNetworkSpawn();
@@ -88,6 +102,8 @@ namespace _Workspace.Scripts
 
             // Setting Input System
             _gameInput = new GameInput();
+            
+            CarSelectAreaController.OnCarSelected += SetCarSo;
         }
 
         private void FixedUpdate()

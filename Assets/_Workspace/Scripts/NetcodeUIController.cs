@@ -38,19 +38,19 @@ namespace _Workspace.Scripts
         {
             NetworkManager.Singleton.StartServer();
         
-            UIController.OnNetcodeUiSelected?.Invoke();
+            UIController.OnNetcodeUiSelected?.Invoke(0);
         }
     
         private void StartClient()
         {
             NetworkManager.Singleton.StartClient();
-            UIController.OnNetcodeUiSelected?.Invoke();
+            UIController.OnNetcodeUiSelected?.Invoke(0);
         }
     
         private void StartHost()
         {
             NetworkManager.Singleton.StartHost();
-            UIController.OnNetcodeUiSelected?.Invoke();
+            UIController.OnNetcodeUiSelected?.Invoke(0);
         }
     
 

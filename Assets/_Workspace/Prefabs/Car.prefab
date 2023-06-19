@@ -62,6 +62,7 @@ MonoBehaviour:
   frontRightWheelTransform: {fileID: 4501949032985772686}
   rearLeftWheelTransform: {fileID: 4496092636252812330}
   rearRightWheelTransform: {fileID: 4495906662569989802}
+  carDataIndex: {fileID: 11400000, guid: 880b9427d31764d9bb6aa990795570cd, type: 2}
 --- !u!65 &4500733552038280005
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -81,8 +82,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.75, y: 0.09518838, z: 4.45553}
-  m_Center: {x: 0, y: 1.2357236, z: 0.17985773}
+  m_Size: {x: 1.75, y: 1.1332078, z: 4.45553}
+  m_Center: {x: 0, y: 0.7167139, z: 0.17985773}
 --- !u!54 &4500733552038280007
 Rigidbody:
   m_ObjectHideFlags: 0

@@ -7,13 +7,14 @@ public class UIController : MonoBehaviour
     #region Variables
 
     [SerializeField] private GameObject netcodeUIParent;
+    [SerializeField] private GameObject carSelectUIParent;
 
     #endregion
 
 
     #region Unity Actions
 
-    public static  UnityAction OnNetcodeUiSelected;
+    public static  UnityAction<int> OnNetcodeUiSelected;
 
     #endregion
 
@@ -23,17 +24,30 @@ public class UIController : MonoBehaviour
     private void OnEnable()
     {
         OnNetcodeUiSelected += CloseNetcodeUI;
+        CarSelectAreaController.OnCarSelected += CloseCarSelectUI;
     }
 
     private void OnDisable()
     { 
-        OnNetcodeUiSelected -= CloseNetcodeUI;
+           OnNetcodeUiSelected -= CloseNetcodeUI;
+           CarSelectAreaController.OnCarSelected -= CloseCarSelectUI;
+    }
+
+    private void CloseCarSelectUI(int index)
+    {
+        carSelectUIParent.SetActive(false);
+    }
+
+    public void OpenCarSelectUI(int index)
+    {
+        carSelectUIParent.SetActive(true);
     }
 
     #endregion
     
-    private void CloseNetcodeUI()
+    private void CloseNetcodeUI(int index)
     {
         netcodeUIParent.SetActive(false);
+        OpenCarSelectUI(index);
     }
 }
