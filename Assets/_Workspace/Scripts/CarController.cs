@@ -44,35 +44,10 @@ namespace _Workspace.Scripts
 
 
         public CarDataIndex carDataIndex;
+
+        private int _currentCarDataIndex;
         
         #endregion
-
-
-        #region Setting Car
-
-        [ClientRpc]
-        private void SetCarSo_ClientRpc(int carDataSoIndex)
-        {
-            carRenderer.material = carDataIndex.GetCarDataSoByIndex(carDataSoIndex).carMaterial;
-        }
-
-        [ServerRpc]
-        private void SetCarSo_ServerRpc(int  carDataSoIndex)
-        {
-           SetCarSo_ClientRpc(carDataSoIndex);
-        }
-        
-        
-        public void SetCarSo(int index)
-        {
-            if (IsOwner)
-            {
-                SetCarSo_ServerRpc(index);
-            }
-        }
-
-        #endregion
-
 
         #region Unity Funcs
         
@@ -85,8 +60,6 @@ namespace _Workspace.Scripts
                 enabled = false;
                 return;
             }
-            
-
             transform.name = IsHost ? "Host" : "Client";
 
             // Setting Rigidbody Center Of Mass
@@ -104,6 +77,20 @@ namespace _Workspace.Scripts
             _gameInput = new GameInput();
             
             CarSelectAreaController.OnCarSelected += SetCarSo;
+            NetworkManager.OnClientConnectedCallback += NetworkManagerOnOnClientConnectedCallback;
+        }
+
+        public override void OnNetworkDespawn()
+        {
+            base.OnNetworkDespawn();
+            
+            CarSelectAreaController.OnCarSelected -= SetCarSo;
+            NetworkManager.OnClientConnectedCallback -= NetworkManagerOnOnClientConnectedCallback;
+        }
+
+        private void NetworkManagerOnOnClientConnectedCallback(ulong obj)
+        {
+            SetCarSo_ServerRpc(_currentCarDataIndex);
         }
 
         private void FixedUpdate()
@@ -120,7 +107,35 @@ namespace _Workspace.Scripts
         }
 
         #endregion
-        
+
+        #region Setting Car
+
+        [ClientRpc]
+        private void SetCarSo_ClientRpc(int carDataSoIndex)
+        {
+            carRenderer.material = carDataIndex.GetCarDataSoByIndex(carDataSoIndex).carMaterial;
+            _currentCarDataIndex = carDataSoIndex;
+        }
+
+        [ServerRpc(RequireOwnership = false)]
+        private void SetCarSo_ServerRpc(int  carDataSoIndex)
+        {
+           SetCarSo_ClientRpc(carDataSoIndex);
+        }
+
+        private void SetCarSo(int index)
+        {
+            if (!IsOwner) return;
+            
+            SetCarSo_ServerRpc(index);
+        }
+
+        private void SetCarPosition(Vector3 newPosition)
+        {
+            transform.position = newPosition;
+        }
+
+        #endregion
 
         #region Car Movement
 
@@ -159,22 +174,15 @@ namespace _Workspace.Scripts
             _currentSteerAngle = _maxSteerAngle * _horizontalInput;
             frontLeftWheelCollider.steerAngle = _currentSteerAngle;
             frontRightWheelCollider.steerAngle = _currentSteerAngle;
-            
-            
-            //Debug.Log("Handling Steering");
         }
-
+        
         private void UpdateWheels()
         {
             UpdateSingleWheel(frontLeftWheelCollider, frontLeftWheelTransform);
             UpdateSingleWheel(frontRightWheelCollider, frontRightWheelTransform);
             UpdateSingleWheel(rearRightWheelCollider, rearRightWheelTransform);
             UpdateSingleWheel(rearLeftWheelCollider, rearLeftWheelTransform);
-            
-            
-            //Debug.Log("Updating Wheels");
         }
-
         private void UpdateSingleWheel(WheelCollider wheelCollider, Transform wheelTransform)
         {
             Vector3 pos;
@@ -185,7 +193,5 @@ namespace _Workspace.Scripts
         }
 
         #endregion
-        
-        
     }
 }
