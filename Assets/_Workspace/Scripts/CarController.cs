@@ -9,40 +9,33 @@ namespace _Workspace.Scripts
     public class CarController : NetworkBehaviour
     {
         #region Variables
-        
-        [SerializeField] MeshRenderer carRenderer;
-        
-        [Header("Car Movement Variables")]
 
+        [SerializeField] private MeshRenderer carRenderer;
+
+        [Header("Car Movement Variables")]
         private float _horizontalInput;
         private float _verticalInput;
         private bool _isBreaking;
         private float _currentBreakForce;
         private float _currentSteerAngle;
-        
-        [SerializeField] private  float _maxSteerAngle = 30f;
-        [SerializeField] private  float motorForce = 50f;
-        [SerializeField] private  float breakForce = 50f;
-        
-        [SerializeField] WheelCollider frontLeftWheelCollider;
-        [SerializeField] WheelCollider frontRightWheelCollider;
-        [SerializeField] WheelCollider rearLeftWheelCollider;
-        [SerializeField] WheelCollider rearRightWheelCollider;
-        
-        
-        [SerializeField] Transform frontLeftWheelTransform;
-        [SerializeField] Transform frontRightWheelTransform;
-        [SerializeField] Transform rearLeftWheelTransform;
-        [SerializeField] Transform rearRightWheelTransform;
-        
-        
+
+        [SerializeField] private float _maxSteerAngle = 30f;
+        [SerializeField] private float motorForce = 50f;
+        [SerializeField] private float breakForce = 50f;
+
+        [SerializeField] private WheelCollider frontLeftWheelCollider;
+        [SerializeField] private WheelCollider frontRightWheelCollider;
+        [SerializeField] private WheelCollider rearLeftWheelCollider;
+        [SerializeField] private WheelCollider rearRightWheelCollider;
+
+        [SerializeField] private Transform frontLeftWheelTransform;
+        [SerializeField] private Transform frontRightWheelTransform;
+        [SerializeField] private Transform rearLeftWheelTransform;
+        [SerializeField] private Transform rearRightWheelTransform;
+
         private CinemachineVirtualCamera _carCamera;
-
         private Rigidbody _rigidbody;
-
         private GameInput _gameInput;
-
-
         public CarDataIndex carDataIndex;
 
         private int _currentCarDataIndex;
@@ -52,69 +45,7 @@ namespace _Workspace.Scripts
         [SerializeField] private Sprite allieSpriteMiniMap;
         private CameraController _miniMapCameraController;
         
-        #endregion
-
-        #region Unity Funcs
-        
-        public override void OnNetworkSpawn()
-        {
-            base.OnNetworkSpawn();
-
-            if (!IsOwner)
-            {
-                enabled = false;
-                return;
-            }
-            transform.name = IsHost ? "Host" : "Client";
-
-            // Setting Rigidbody Center Of Mass
-            _rigidbody = GetComponent<Rigidbody>();
-            var curCenter =_rigidbody.centerOfMass;
-            curCenter.y = -1;
-            _rigidbody.centerOfMass = curCenter;
-
-            // Setting Camera
-            _carCamera = GameObject.FindGameObjectWithTag("CarCamera").GetComponent<CinemachineVirtualCamera>();
-            _carCamera.m_Follow = transform;
-            _carCamera.m_LookAt = transform;
-
-            // Setting Input System
-            _gameInput = new GameInput();
-            
-            //Setting Mini Map Icon
-            miniMapSpriteRenderer.sprite = allieSpriteMiniMap;
-            _miniMapCameraController = FindObjectOfType<CameraController>();
-            _miniMapCameraController.CameraTarget = transform;
-            
-            CarSelectAreaController.OnCarSelected += SetCarSo;
-            NetworkManager.OnClientConnectedCallback += NetworkManagerOnOnClientConnectedCallback;
-        }
-
-        public override void OnNetworkDespawn()
-        {
-            base.OnNetworkDespawn();
-            
-            CarSelectAreaController.OnCarSelected -= SetCarSo;
-            NetworkManager.OnClientConnectedCallback -= NetworkManagerOnOnClientConnectedCallback;
-        }
-
-        private void NetworkManagerOnOnClientConnectedCallback(ulong obj)
-        {
-            SetCarSo_ServerRpc(_currentCarDataIndex);
-        }
-
-        private void FixedUpdate()
-        {
-            if (!IsOwner)
-            {
-                return;
-            }
-            
-            GetInput();
-            HandleMotor();
-            HandleSteering();
-            UpdateWheels();
-        }
+        private MapController _activeMapController;
 
         #endregion
 
@@ -128,21 +59,84 @@ namespace _Workspace.Scripts
         }
 
         [ServerRpc(RequireOwnership = false)]
-        private void SetCarSo_ServerRpc(int  carDataSoIndex)
+        private void SetCarSo_ServerRpc(int carDataSoIndex)
         {
-           SetCarSo_ClientRpc(carDataSoIndex);
+            SetCarSo_ClientRpc(carDataSoIndex);
         }
 
-        private void SetCarSo(int index)
+        public void SetCarSo(int index)
         {
             if (!IsOwner) return;
-            
+
             SetCarSo_ServerRpc(index);
+
+            transform.position = _activeMapController.GetEmptyStartPosition();
         }
 
-        private void SetCarPosition(Vector3 newPosition)
+        #endregion
+
+        #region Unity Funcs
+
+        public override void OnNetworkSpawn()
         {
-            transform.position = newPosition;
+            base.OnNetworkSpawn();
+
+            if (!IsOwner)
+            {
+                enabled = false;
+                return;
+            }
+
+            _activeMapController = FindObjectOfType<MapController>();
+
+            transform.name = IsHost ? "Host" : "Client";
+
+            transform.position = _activeMapController.GetEmptyCarSpawnPosition();
+
+            // Setting Rigidbody Center Of Mass
+            _rigidbody = GetComponent<Rigidbody>();
+            var curCenter = _rigidbody.centerOfMass;
+            curCenter.y = -1;
+            _rigidbody.centerOfMass = curCenter;
+
+            // Setting Camera
+            _carCamera = GameObject.FindGameObjectWithTag("CarCamera").GetComponent<CinemachineVirtualCamera>();
+            _carCamera.m_Follow = transform;
+            _carCamera.m_LookAt = transform;
+
+            // Setting Input System
+            _gameInput = new GameInput();
+
+            // Setting Mini Map Icon
+            miniMapSpriteRenderer.sprite = allieSpriteMiniMap;
+            _miniMapCameraController = FindObjectOfType<CameraController>();
+            _miniMapCameraController.CameraTarget = transform;
+
+            CarSelectAreaController.OnCarSelected += SetCarSo;
+            NetworkManager.OnClientConnectedCallback += NetworkManagerOnOnClientConnectedCallback;
+        }
+
+        public override void OnNetworkDespawn()
+        {
+            base.OnNetworkDespawn();
+
+            CarSelectAreaController.OnCarSelected -= SetCarSo;
+            NetworkManager.OnClientConnectedCallback -= NetworkManagerOnOnClientConnectedCallback;
+        }
+
+        private void NetworkManagerOnOnClientConnectedCallback(ulong obj)
+        {
+            SetCarSo_ServerRpc(_currentCarDataIndex);
+        }
+
+        private void FixedUpdate()
+        {
+            if (!IsOwner) return;
+
+            GetInput();
+            HandleMotor();
+            HandleSteering();
+            UpdateWheels();
         }
 
         #endregion
@@ -151,22 +145,17 @@ namespace _Workspace.Scripts
 
         private void GetInput()
         {
-            
             _horizontalInput = _gameInput.GetMovementDirection().x;
             _verticalInput = _gameInput.GetMovementDirection().y;
             _isBreaking = _gameInput.GetBrakeStatus();
-            
-            //Debug.Log($"Horizontal : {_horizontalInput} // Vertical : {_verticalInput} // Breaking : {_isBreaking}");
         }
-        
+
         private void HandleMotor()
         {
             frontLeftWheelCollider.motorTorque = _verticalInput * motorForce;
             frontRightWheelCollider.motorTorque = _verticalInput * motorForce;
             _currentBreakForce = _isBreaking ? breakForce : 0f;
             ApplyBreaking();
-            
-            //Debug.Log("Handling Motor");
         }
 
         private void ApplyBreaking()
@@ -175,8 +164,6 @@ namespace _Workspace.Scripts
             frontLeftWheelCollider.brakeTorque = _currentBreakForce;
             rearLeftWheelCollider.brakeTorque = _currentBreakForce;
             rearRightWheelCollider.brakeTorque = _currentBreakForce;
-            
-            //Debug.Log("Applying Breaking");
         }
 
         private void HandleSteering()
@@ -185,7 +172,7 @@ namespace _Workspace.Scripts
             frontLeftWheelCollider.steerAngle = _currentSteerAngle;
             frontRightWheelCollider.steerAngle = _currentSteerAngle;
         }
-        
+
         private void UpdateWheels()
         {
             UpdateSingleWheel(frontLeftWheelCollider, frontLeftWheelTransform);
@@ -193,6 +180,7 @@ namespace _Workspace.Scripts
             UpdateSingleWheel(rearRightWheelCollider, rearRightWheelTransform);
             UpdateSingleWheel(rearLeftWheelCollider, rearLeftWheelTransform);
         }
+
         private void UpdateSingleWheel(WheelCollider wheelCollider, Transform wheelTransform)
         {
             Vector3 pos;
