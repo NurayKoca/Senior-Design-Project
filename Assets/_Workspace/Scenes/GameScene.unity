@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_SkyboxMaterial: {fileID: 2100000, guid: 64f097816ddce4d298fde8f2ccd49707, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028326, g: 0.22571333, b: 0.30692202, a: 1}
+  m_IndirectSpecularColor: {r: 0.120291755, g: 0.18584885, b: 0.33407485, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -499,7 +499,7 @@ GameObject:
   - component: {fileID: 2068692217}
   - component: {fileID: 2068692216}
   - component: {fileID: 2068692219}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Plane
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -798,17 +798,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: CAMERAS
       objectReference: {fileID: 0}
+    - target: {fileID: 1393153145803678632, guid: e5d9cab3e36aa4c6c85247944d680203, type: 3}
+      propertyPath: CameraTarget
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 5507112606908678736, guid: e5d9cab3e36aa4c6c85247944d680203, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.6825692
+      value: 0.68256915
       objectReference: {fileID: 0}
     - target: {fileID: 5507112606908678736, guid: e5d9cab3e36aa4c6c85247944d680203, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.68256915
+      value: -0.6825692
       objectReference: {fileID: 0}
     - target: {fileID: 5507112606908678736, guid: e5d9cab3e36aa4c6c85247944d680203, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.18466002
+      value: 0.18466006
       objectReference: {fileID: 0}
     - target: {fileID: 6940803226544613961, guid: e5d9cab3e36aa4c6c85247944d680203, type: 3}
       propertyPath: m_RootOrder
@@ -854,34 +858,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8668249783475988086, guid: e5d9cab3e36aa4c6c85247944d680203, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 2.3148897
-      objectReference: {fileID: 0}
-    - target: {fileID: 8668249783475988086, guid: e5d9cab3e36aa4c6c85247944d680203, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 2.533928
-      objectReference: {fileID: 0}
-    - target: {fileID: 8668249783475988086, guid: e5d9cab3e36aa4c6c85247944d680203, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -7.004489
-      objectReference: {fileID: 0}
-    - target: {fileID: 8668249783475988086, guid: e5d9cab3e36aa4c6c85247944d680203, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.99529225
-      objectReference: {fileID: 0}
-    - target: {fileID: 8668249783475988086, guid: e5d9cab3e36aa4c6c85247944d680203, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0.09691962
-      objectReference: {fileID: 0}
-    - target: {fileID: 8668249783475988086, guid: e5d9cab3e36aa4c6c85247944d680203, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0.00000001660666
-      objectReference: {fileID: 0}
-    - target: {fileID: 8668249783475988086, guid: e5d9cab3e36aa4c6c85247944d680203, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0.0000000016171241
-      objectReference: {fileID: 0}
     - target: {fileID: 8715930964077727797, guid: e5d9cab3e36aa4c6c85247944d680203, type: 3}
       propertyPath: m_Follow
       value: 
@@ -919,10 +895,6 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2458395933999067679, guid: cc92213454d144f9e9aef23104255323, type: 3}
-      propertyPath: carDataIndex
-      value: 
-      objectReference: {fileID: 11400000, guid: 880b9427d31764d9bb6aa990795570cd, type: 2}
     - target: {fileID: 2894449970479203520, guid: cc92213454d144f9e9aef23104255323, type: 3}
       propertyPath: m_Name
       value: MainCanvas

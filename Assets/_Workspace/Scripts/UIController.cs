@@ -8,6 +8,7 @@ public class UIController : MonoBehaviour
 
     [SerializeField] private GameObject netcodeUIParent;
     [SerializeField] private GameObject carSelectUIParent;
+    [SerializeField] private GameObject miniMapParent;
 
     #endregion
 
@@ -36,6 +37,7 @@ public class UIController : MonoBehaviour
     private void CloseCarSelectUI(int index)
     {
         carSelectUIParent.SetActive(false);
+        OpenMiniMap();
     }
 
     public void OpenCarSelectUI(int index)
@@ -43,11 +45,22 @@ public class UIController : MonoBehaviour
         carSelectUIParent.SetActive(true);
     }
 
-    #endregion
-    
     private void CloseNetcodeUI(int index)
     {
         netcodeUIParent.SetActive(false);
         OpenCarSelectUI(index);
     }
+
+    private void OpenMiniMap()
+    {
+        miniMapParent.SetActive(true);
+    }
+
+    private void CloseMiniMap()
+    {
+        miniMapParent.SetActive(false);
+    }
+    #endregion
+    
+    
 }

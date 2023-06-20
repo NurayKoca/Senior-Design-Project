@@ -1,6 +1,6 @@
-using System.Collections.Generic;
 using _Workspace.ScriptableObjects;
 using Cinemachine;
+using TMPro.Examples;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -46,6 +46,11 @@ namespace _Workspace.Scripts
         public CarDataIndex carDataIndex;
 
         private int _currentCarDataIndex;
+
+        [Header("MINI MAP")]
+        [SerializeField] private SpriteRenderer miniMapSpriteRenderer;
+        [SerializeField] private Sprite allieSpriteMiniMap;
+        private CameraController _miniMapCameraController;
         
         #endregion
 
@@ -75,6 +80,11 @@ namespace _Workspace.Scripts
 
             // Setting Input System
             _gameInput = new GameInput();
+            
+            //Setting Mini Map Icon
+            miniMapSpriteRenderer.sprite = allieSpriteMiniMap;
+            _miniMapCameraController = FindObjectOfType<CameraController>();
+            _miniMapCameraController.CameraTarget = transform;
             
             CarSelectAreaController.OnCarSelected += SetCarSo;
             NetworkManager.OnClientConnectedCallback += NetworkManagerOnOnClientConnectedCallback;
