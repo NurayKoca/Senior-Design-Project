@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.Events;
+using Workspace.Scripts;
 
 public class UIController : MonoBehaviour
 {
@@ -9,6 +10,8 @@ public class UIController : MonoBehaviour
     [SerializeField] private GameObject netcodeUIParent;
     [SerializeField] private GameObject carSelectUIParent;
     [SerializeField] private GameObject miniMapParent;
+    [SerializeField] private GameObject waitingUIParent;
+    [SerializeField] private GameObject countDownTimerUIParent;
 
     #endregion
 
@@ -22,25 +25,35 @@ public class UIController : MonoBehaviour
 
     #region Unity Funcs
 
-    private void OnEnable()
+    private void Start()
     {
         OnNetcodeUiSelected += CloseNetcodeUI;
         CarSelectAreaController.OnCarSelected += CloseCarSelectUI;
+        CarSelectAreaController.OnCarSelected += OpenWaitingUI;
+        GameManager.instance.OnAllPlayersReady += CloseWaitingUI;
+        GameManager.instance.OnAllPlayersReady += OpenCountDownTimerUI;
     }
 
-    private void OnDisable()
+    private void OnDestroy()
     { 
            OnNetcodeUiSelected -= CloseNetcodeUI;
            CarSelectAreaController.OnCarSelected -= CloseCarSelectUI;
+           CarSelectAreaController.OnCarSelected -= OpenWaitingUI;
+           GameManager.instance.OnAllPlayersReady -= CloseWaitingUI;
+           GameManager.instance.OnAllPlayersReady -= OpenCountDownTimerUI;
     }
 
+   
+    #endregion
+    
+    
     private void CloseCarSelectUI(int index)
     {
         carSelectUIParent.SetActive(false);
         OpenMiniMap();
     }
 
-    public void OpenCarSelectUI(int index)
+    private void OpenCarSelectUI(int index)
     {
         carSelectUIParent.SetActive(true);
     }
@@ -60,7 +73,26 @@ public class UIController : MonoBehaviour
     {
         miniMapParent.SetActive(false);
     }
-    #endregion
+
+    private void OpenWaitingUI(int index)
+    {
+        waitingUIParent.SetActive(true);
+    }
+
+    private void CloseWaitingUI()
+    {
+        waitingUIParent.SetActive(false);
+    }
+
+    private void OpenCountDownTimerUI()
+    {
+        countDownTimerUIParent.SetActive(true);
+    }
+
+    private void CloseCountDownTimerUI()
+    {
+        countDownTimerUIParent.SetActive(false);
+    }
     
     
 }
