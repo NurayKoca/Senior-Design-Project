@@ -1,33 +1,48 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
-public class MapController : MonoBehaviour
+public class MapController : NetworkBehaviour
 {
     // Placement
     [SerializeField] private List<Transform> startPositions;
-    private int _playerIndex = 0;
+    private NetworkVariable<int> _playerIndex = new NetworkVariable<int>(0);
 
     [SerializeField] private Transform carSpawnStartPoint;
-    private int _spawnedPlayerCount = 0;
+    private NetworkVariable<int> _spawnedPlayerCount = new NetworkVariable<int>(0);
+    
     public Vector3 GetEmptyStartPosition()
     {
         Vector3 position = Vector3.zero;
-        if (_playerIndex < startPositions.Count)
+        if (_playerIndex.Value < startPositions.Count)
         {
-            position = startPositions[_playerIndex].position;
+            position = startPositions[_playerIndex.Value].position;
         }
 
-        _playerIndex++;
+        IncreasePlayerIndex_ServerRpc();
 
         return position;
     }
 
     public Vector3 GetEmptyCarSpawnPosition()
     {
-        var pos = carSpawnStartPoint.position + (new Vector3(5,0,0) * _spawnedPlayerCount);
-        _spawnedPlayerCount++;
+        var pos = carSpawnStartPoint.position + (new Vector3(5,0,0) * _spawnedPlayerCount.Value);
+        IncreaseSpawnedPlayerCount_ServerRpc();
 
         return pos;
     }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void IncreasePlayerIndex_ServerRpc()
+    {
+        _playerIndex.Value++;
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void IncreaseSpawnedPlayerCount_ServerRpc()
+    {
+        _spawnedPlayerCount.Value++;
+    }
+    
 }

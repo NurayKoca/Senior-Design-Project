@@ -113,7 +113,7 @@ namespace _Workspace.Scripts
             _miniMapCameraController.CameraTarget = transform;
 
             CarSelectAreaController.OnCarSelected += SetCarSo;
-            NetworkManager.OnClientConnectedCallback += NetworkManagerOnOnClientConnectedCallback;
+            //NetworkManager.OnClientConnectedCallback += NetworkManagerOnOnClientConnectedCallback;
         }
 
         public override void OnNetworkDespawn()
@@ -121,7 +121,7 @@ namespace _Workspace.Scripts
             base.OnNetworkDespawn();
 
             CarSelectAreaController.OnCarSelected -= SetCarSo;
-            NetworkManager.OnClientConnectedCallback -= NetworkManagerOnOnClientConnectedCallback;
+            //NetworkManager.OnClientConnectedCallback -= NetworkManagerOnOnClientConnectedCallback;
         }
 
         private void NetworkManagerOnOnClientConnectedCallback(ulong obj)

@@ -24,7 +24,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 157980346083123602}
-  m_LocalRotation: {x: 0.18466005, y: -0.68256915, z: 0.18466002, w: 0.6825692}
+  m_LocalRotation: {x: 0.18466005, y: -0.68256915, z: 0.18466003, w: 0.6825692}
   m_LocalPosition: {x: -17.91, y: 4.5699997, z: -191.3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -82,7 +82,6 @@ GameObject:
   m_Component:
   - component: {fileID: 105006995640864834}
   - component: {fileID: 130357725675076023}
-  - component: {fileID: 410192692830344224}
   - component: {fileID: 1393153145803678632}
   m_Layer: 0
   m_Name: MapCamera
@@ -157,14 +156,6 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!81 &410192692830344224
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 278129566468989924}
-  m_Enabled: 1
 --- !u!114 &1393153145803678632
 MonoBehaviour:
   m_ObjectHideFlags: 0
