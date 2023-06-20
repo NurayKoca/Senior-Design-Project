@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using Workspace.Scripts;
 
 public class StartCountDownTimerController : MonoBehaviour
 {
@@ -48,7 +49,11 @@ public class StartCountDownTimerController : MonoBehaviour
         
         countDownTxt.SetText("GO!");
         
+        GameManager.instance.PlayersCanMove();
+        
         yield return new WaitForSeconds(.15f);
+        
+        UIController.instance.OpenSpeedoMeterUI();
         
         gameObject.SetActive(false);
     }

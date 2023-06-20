@@ -3,6 +3,7 @@ using Cinemachine;
 using TMPro.Examples;
 using Unity.Netcode;
 using UnityEngine;
+using Workspace.Scripts;
 
 namespace _Workspace.Scripts
 {
@@ -22,6 +23,7 @@ namespace _Workspace.Scripts
         [SerializeField] private float _maxSteerAngle = 30f;
         [SerializeField] private float motorForce = 50f;
         [SerializeField] private float breakForce = 50f;
+        private bool _canMove;
 
         [SerializeField] private WheelCollider frontLeftWheelCollider;
         [SerializeField] private WheelCollider frontRightWheelCollider;
@@ -98,6 +100,7 @@ namespace _Workspace.Scripts
             var curCenter = _rigidbody.centerOfMass;
             curCenter.y = -1;
             _rigidbody.centerOfMass = curCenter;
+            _rigidbody.isKinematic = true;
 
             // Setting Camera
             _carCamera = GameObject.FindGameObjectWithTag("CarCamera").GetComponent<CinemachineVirtualCamera>();
@@ -111,9 +114,13 @@ namespace _Workspace.Scripts
             miniMapSpriteRenderer.sprite = allieSpriteMiniMap;
             _miniMapCameraController = FindObjectOfType<CameraController>();
             _miniMapCameraController.CameraTarget = transform;
+            
+            // Setting Speedometer
+            _speedoMeterUIController = FindObjectOfType<SpeedoMeterUIController>();
 
             CarSelectAreaController.OnCarSelected += SetCarSo;
             NetworkManager.OnClientConnectedCallback += NetworkManagerOnOnClientConnectedCallback;
+            GameManager.instance._playersCanMove.OnValueChanged += PlayersCanMoveOnValueChanged;
         }
 
         public override void OnNetworkDespawn()
@@ -122,21 +129,31 @@ namespace _Workspace.Scripts
 
             CarSelectAreaController.OnCarSelected -= SetCarSo;
             NetworkManager.OnClientConnectedCallback -= NetworkManagerOnOnClientConnectedCallback;
+            GameManager.instance._playersCanMove.OnValueChanged -= PlayersCanMoveOnValueChanged;
         }
 
         private void NetworkManagerOnOnClientConnectedCallback(ulong obj)
         {
             SetCarSo_ServerRpc(_currentCarDataIndex);
         }
+        private void PlayersCanMoveOnValueChanged(bool previousvalue, bool newvalue)
+        {
+            _canMove = newvalue;
+
+            if (newvalue)
+                _rigidbody.isKinematic = false;
+        }
 
         private void FixedUpdate()
         {
             if (!IsOwner) return;
+            if(!_canMove) return;
 
             GetInput();
             HandleMotor();
             HandleSteering();
             UpdateWheels();
+            SetSpeed();
         }
 
         #endregion
@@ -188,6 +205,28 @@ namespace _Workspace.Scripts
             wheelCollider.GetWorldPose(out pos, out rot);
             wheelTransform.rotation = rot;
             wheelTransform.position = pos;
+        }
+
+        #endregion
+
+        #region SpeedoMeter
+
+        private float _prevSpeed = 0;
+        private float _curSpeed = 0;
+        private SpeedoMeterUIController _speedoMeterUIController;
+
+        private void SetSpeed()
+        {
+            _curSpeed = _rigidbody.velocity.magnitude*6;
+            UpdateSpeedometerUI();
+            _prevSpeed = _curSpeed;
+        }
+        private void UpdateSpeedometerUI()
+        {
+            if(_speedoMeterUIController == null) return;
+            
+            _speedoMeterUIController.SetSpeed(Mathf.Abs(_prevSpeed),Mathf.Abs(_curSpeed));
+            _speedoMeterUIController.SetSpeedHand(-Mathf.Abs(_curSpeed));
         }
 
         #endregion

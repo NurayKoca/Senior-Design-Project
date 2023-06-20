@@ -17,6 +17,7 @@ namespace Workspace.Scripts
 
 
         public NetworkVariable<bool> _allPlayersReady = new NetworkVariable<bool>(false);
+        public NetworkVariable<bool> _playersCanMove = new NetworkVariable<bool>(false);
         private void Awake()
         {
             instance = this;
@@ -78,7 +79,12 @@ namespace Workspace.Scripts
 
             return allPlayersReady;
         }
-        
+
+        public void PlayersCanMove()
+        {
+            if(IsServer)
+                _playersCanMove.Value = true;
+        }
 
         #endregion
     }

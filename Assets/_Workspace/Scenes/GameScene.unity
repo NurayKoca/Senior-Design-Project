@@ -223,6 +223,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32254f1127b104c299342cc425d92554, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _allPlayersReady:
+    m_InternalValue: 0
+  _playersCanMove:
+    m_InternalValue: 0
 --- !u!4 &759351738
 Transform:
   m_ObjectHideFlags: 0
@@ -354,7 +358,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-156558
+  m_Name: pb_Mesh-2716
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -874,7 +878,7 @@ PrefabInstance:
       objectReference: {fileID: 1432220705}
     - target: {fileID: 3278023215864759245, guid: 560a26139734c46b585ad9b46c09ae17, type: 3}
       propertyPath: m_VersionIndex
-      value: 3230
+      value: 3233
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -903,7 +907,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5507112606908678736, guid: e5d9cab3e36aa4c6c85247944d680203, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.18466003
+      value: 0.18466002
       objectReference: {fileID: 0}
     - target: {fileID: 6940803226544613961, guid: e5d9cab3e36aa4c6c85247944d680203, type: 3}
       propertyPath: m_RootOrder
@@ -948,34 +952,6 @@ PrefabInstance:
     - target: {fileID: 6940803226544613961, guid: e5d9cab3e36aa4c6c85247944d680203, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8668249783475988086, guid: e5d9cab3e36aa4c6c85247944d680203, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -17.91
-      objectReference: {fileID: 0}
-    - target: {fileID: 8668249783475988086, guid: e5d9cab3e36aa4c6c85247944d680203, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 4.5699997
-      objectReference: {fileID: 0}
-    - target: {fileID: 8668249783475988086, guid: e5d9cab3e36aa4c6c85247944d680203, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -191.3
-      objectReference: {fileID: 0}
-    - target: {fileID: 8668249783475988086, guid: e5d9cab3e36aa4c6c85247944d680203, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.6825692
-      objectReference: {fileID: 0}
-    - target: {fileID: 8668249783475988086, guid: e5d9cab3e36aa4c6c85247944d680203, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0.18466005
-      objectReference: {fileID: 0}
-    - target: {fileID: 8668249783475988086, guid: e5d9cab3e36aa4c6c85247944d680203, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0.68256915
-      objectReference: {fileID: 0}
-    - target: {fileID: 8668249783475988086, guid: e5d9cab3e36aa4c6c85247944d680203, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0.18466003
       objectReference: {fileID: 0}
     - target: {fileID: 8715930964077727797, guid: e5d9cab3e36aa4c6c85247944d680203, type: 3}
       propertyPath: m_Follow
