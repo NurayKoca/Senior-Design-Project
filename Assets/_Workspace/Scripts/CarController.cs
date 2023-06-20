@@ -44,6 +44,8 @@ namespace _Workspace.Scripts
 
 
         public CarDataIndex carDataIndex;
+
+        private MapController _activeMapController;
         
         #endregion
 
@@ -68,6 +70,8 @@ namespace _Workspace.Scripts
             if (IsOwner)
             {
                 SetCarSo_ServerRpc(index);
+
+                transform.position = _activeMapController.GetEmptyStartPosition();
             }
         }
 
@@ -85,9 +89,12 @@ namespace _Workspace.Scripts
                 enabled = false;
                 return;
             }
-            
+
+            _activeMapController = FindObjectOfType<MapController>();
 
             transform.name = IsHost ? "Host" : "Client";
+
+            transform.position = _activeMapController.GetEmptyCarSpawnPosition();
 
             // Setting Rigidbody Center Of Mass
             _rigidbody = GetComponent<Rigidbody>();
