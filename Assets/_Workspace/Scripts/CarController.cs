@@ -5,7 +5,6 @@ using DG.Tweening;
 using TMPro.Examples;
 using Unity.Netcode;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Workspace.Scripts;
 
 namespace _Workspace.Scripts
