@@ -1,8 +1,11 @@
+using System.Collections;
 using _Workspace.ScriptableObjects;
 using Cinemachine;
+using DG.Tweening;
 using TMPro.Examples;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Workspace.Scripts;
 
 namespace _Workspace.Scripts
@@ -141,7 +144,11 @@ namespace _Workspace.Scripts
             _canMove = newvalue;
 
             if (newvalue)
+            {
                 _rigidbody.isKinematic = false;
+                StartCoroutine(StartCountDownTimer());
+            }
+                
         }
 
         private void FixedUpdate()
@@ -230,5 +237,38 @@ namespace _Workspace.Scripts
         }
 
         #endregion
+
+        #region Finish
+
+        public void Finish()
+        {
+            _rigidbody.isKinematic = true;
+            _canMove = false;
+            Sequence seq = DOTween.Sequence();
+            seq.Append(transform.DOMove(transform.position + new Vector3(0, 0, -20), 2f))
+                .Join(transform.DORotate(transform.localEulerAngles + new Vector3(0, 120, 0), 1.75f));
+
+            StopCoroutine(StartCountDownTimer());
+
+            GameManager.instance.playerReachedFinishCount.Value++;
+        }
+
+        #endregion
+
+        private float _currentTime = 0;
+        private IEnumerator StartCountDownTimer()
+        {
+            while (true)
+            {
+                _currentTime += Time.deltaTime;
+                yield return null;
+            }
+        }
+
+        public void UpdateFinishUI()
+        {
+            UIController.instance.OpenAndUpdateFinishUI(GameManager.instance.playerReachedFinishCount.Value,
+                _currentTime);
+        }
     }
 }

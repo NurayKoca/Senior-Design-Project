@@ -18,6 +18,7 @@ namespace Workspace.Scripts
 
         public NetworkVariable<bool> _allPlayersReady = new NetworkVariable<bool>(false);
         public NetworkVariable<bool> _playersCanMove = new NetworkVariable<bool>(false);
+        public NetworkVariable<int> playerReachedFinishCount = new NetworkVariable<int>(1);
         private void Awake()
         {
             instance = this;

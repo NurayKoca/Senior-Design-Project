@@ -17,6 +17,7 @@ public class UIController : MonoBehaviour
     [SerializeField] private GameObject waitingUIParent;
     [SerializeField] private GameObject countDownTimerUIParent;
     [SerializeField] private CanvasGroup speedoMeterCanvasGroup;
+    [SerializeField] private LevelEndUIController _levelEndUIController;
 
     #endregion
 
@@ -115,6 +116,10 @@ public class UIController : MonoBehaviour
     {
         speedoMeterCanvasGroup.DOFade(1, .3f);
     }
-    
-    
+
+
+    public void OpenAndUpdateFinishUI(int rank, float currentTime)
+    {
+        _levelEndUIController.OpenAndUpdateUI(rank, currentTime);
+    }
 }
