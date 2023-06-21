@@ -1,5 +1,6 @@
 using System;
 using DG.Tweening;
+using TMPro;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Events;
@@ -18,6 +19,8 @@ public class UIController : MonoBehaviour
     [SerializeField] private GameObject countDownTimerUIParent;
     [SerializeField] private CanvasGroup speedoMeterCanvasGroup;
     [SerializeField] private LevelEndUIController _levelEndUIController;
+    [SerializeField] private GameObject timeElapsedUIGo;
+    [SerializeField] private TextMeshProUGUI timeElapsedTxt;
 
     #endregion
 
@@ -90,19 +93,17 @@ public class UIController : MonoBehaviour
         if(GameManager.instance.NetworkManager.ConnectedClientsList.Count ==1)
             return;
         
-        Debug.Log($"Open Waiting UI -> {Time.time}");
         waitingUIParent.SetActive(true);
     }
 
     private void CloseWaitingUI()
     {
-        Debug.Log($"Close Waiting UI -> {Time.time}");
         waitingUIParent.SetActive(false);
     }
 
     private void OpenCountDownTimerUI()
     {
-        Debug.Log($"Open CountDown UI -> {Time.time}");
+        
         countDownTimerUIParent.SetActive(true);
         CloseWaitingUI();
     }
@@ -115,11 +116,28 @@ public class UIController : MonoBehaviour
     public void OpenSpeedoMeterUI()
     {
         speedoMeterCanvasGroup.DOFade(1, .3f);
+        OpenTimePanel();
     }
 
 
     public void OpenAndUpdateFinishUI(int rank, float currentTime)
     {
+        CloseTimePanel();
         _levelEndUIController.OpenAndUpdateUI(rank, currentTime);
+    }
+
+    public void OpenTimePanel()
+    {
+        timeElapsedUIGo.SetActive(true);
+    }
+
+    public void CloseTimePanel()
+    {
+        timeElapsedUIGo.SetActive(false);
+    }
+
+    public void UpdateTimeElapsed(string time)
+    {
+        timeElapsedTxt.SetText($"Time : {time}");
     }
 }

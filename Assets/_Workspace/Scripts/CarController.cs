@@ -161,6 +161,12 @@ namespace _Workspace.Scripts
             HandleSteering();
             UpdateWheels();
             SetSpeed();
+            UpdateTime();
+        }
+
+        private void UpdateTime()
+        {
+            UIController.instance.UpdateTimeElapsed(secondToTimeConvertor(_currentTime));
         }
 
         #endregion
@@ -269,6 +275,11 @@ namespace _Workspace.Scripts
         {
             UIController.instance.OpenAndUpdateFinishUI(GameManager.instance.playerReachedFinishCount.Value,
                 _currentTime);
+        }
+        
+        private string secondToTimeConvertor(float second)
+        {
+            return (second / 60f).ToString("0.00") + "Minute";
         }
     }
 }
