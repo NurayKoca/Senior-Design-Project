@@ -90,8 +90,9 @@ public class UIController : MonoBehaviour
     [ServerRpc]
     private void OpenWaitingUI_ServerRpc(int index)
     {
-        if(GameManager.instance.NetworkManager.ConnectedClientsList.Count ==1)
-            return;
+        if(NetworkManager.Singleton.IsHost)
+            if(GameManager.instance.NetworkManager.ConnectedClientsList.Count ==1)
+                return;
         
         waitingUIParent.SetActive(true);
     }
@@ -120,8 +121,13 @@ public class UIController : MonoBehaviour
     }
 
 
+    private bool isFinishUIUsed = false;
     public void OpenAndUpdateFinishUI(int rank, float currentTime)
     {
+        if(isFinishUIUsed)
+            return;
+
+        isFinishUIUsed = true;
         CloseTimePanel();
         _levelEndUIController.OpenAndUpdateUI(rank, currentTime);
     }

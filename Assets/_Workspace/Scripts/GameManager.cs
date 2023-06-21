@@ -28,6 +28,8 @@ namespace Workspace.Scripts
         private void Start()
         {
             _allPlayersReady.OnValueChanged += OnValueChanged;
+
+            playerReachedFinishCount.Value = 1;
         }
 
         private void OnValueChanged(bool previousvalue, bool newvalue)
@@ -88,5 +90,11 @@ namespace Workspace.Scripts
         }
 
         #endregion
+
+        [ServerRpc(RequireOwnership = false)]
+        public void IncreasePlayerReachedEnd_ServerRpc()
+        {
+            playerReachedFinishCount.Value++;
+        }
     }
 }

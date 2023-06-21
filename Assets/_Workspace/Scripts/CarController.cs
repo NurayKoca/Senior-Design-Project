@@ -246,8 +246,17 @@ namespace _Workspace.Scripts
 
         #region Finish
 
+        private bool isFinished = false;
         public void Finish()
         {
+            if (!IsOwner)
+                return;
+            
+            if(isFinished)
+                return;
+
+            isFinished = true;
+            
             _rigidbody.isKinematic = true;
             _canMove = false;
             Sequence seq = DOTween.Sequence();
@@ -256,7 +265,7 @@ namespace _Workspace.Scripts
 
             StopCoroutine(StartCountDownTimer());
 
-            GameManager.instance.playerReachedFinishCount.Value++;
+            GameManager.instance.IncreasePlayerReachedEnd_ServerRpc();
         }
 
         #endregion
@@ -273,6 +282,9 @@ namespace _Workspace.Scripts
 
         public void UpdateFinishUI()
         {
+            if(!IsOwner) return;
+
+            Debug.Log(GameManager.instance.playerReachedFinishCount.Value);
             UIController.instance.OpenAndUpdateFinishUI(GameManager.instance.playerReachedFinishCount.Value,
                 _currentTime);
         }

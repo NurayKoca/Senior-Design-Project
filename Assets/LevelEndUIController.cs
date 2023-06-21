@@ -4,6 +4,7 @@ using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Workspace.Scripts;
 
 public class LevelEndUIController : MonoBehaviour
 {
@@ -17,10 +18,12 @@ public class LevelEndUIController : MonoBehaviour
         backToMainMenuButton.onClick.AddListener(BackToMainMenu);
     }
 
+    [ContextMenu("BackToMainMenu")]
     private void BackToMainMenu()
     {
+        NetworkManager.Singleton.DisconnectClient(GameManager.instance.NetworkManager.LocalClientId);
         NetworkManager.Singleton.Shutdown();
-        Destroy(NetworkManager.Singleton.gameObject);
+        DestroyImmediate(NetworkManager.Singleton.gameObject);
         SceneManager.LoadScene(0);
     }
 

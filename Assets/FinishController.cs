@@ -7,8 +7,9 @@ public class FinishController : MonoBehaviour
     {
         if (other.gameObject.TryGetComponent<CarController>(out var carController))
         {
-            carController.Finish();
             carController.UpdateFinishUI();
+            carController.Finish();
+            
         }
     }
 }
